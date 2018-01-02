@@ -4,6 +4,11 @@ var platforms;
 var player;
 var cursors;
 var coins;
+var score = 0;
+var scoreText;
+var win = false;
+var winScore = 30;
+var winText;
 
 //Sets up our game
 game = new Phaser.Game(800, 600, Phaser.CANVAS, '', { preload: preload, create: create, update: update });
@@ -56,6 +61,9 @@ function create() {
   coin = coins.create(500,100, 'coin');
   coin.animations.add('spin');
   coin.animations.play('spin', 10, true);
+
+  scoreText = game.add.text(16,16, 'score: ' + score, {font: 'bold 24px Arial', fill: 'white'});
+  winText = game.add.text(325, 275, "", { font: "bold 48px Arial", fill: "white" });
 }
 //checks when player and platform collide.
 function update() {
@@ -89,6 +97,9 @@ function update() {
    if (cursors.up.isDown && player.body.touching.down && hitPlatform){
        player.body.velocity.y = -300;
    }
+   if(win){
+     winText.text = "You Win!"
+   }
 
 }
 
@@ -98,4 +109,10 @@ function render(){
 
 function collectStar(player, star){
   star.kill();
+  score+=10;
+  scoreText.text = 'score: ' + score;
+
+  if(score === winScore){
+    win = true;
+  }
 }
