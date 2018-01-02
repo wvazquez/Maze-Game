@@ -3,6 +3,7 @@ var game;
 var platforms;
 var player;
 var cursors;
+var coins;
 
 //Sets up our game
 game = new Phaser.Game(800, 600, Phaser.CANVAS, '', { preload: preload, create: create, update: update });
@@ -39,16 +40,27 @@ function create() {
   player.body.bounce.y = 0.2;
   player.body.gravity.y = 300;
   player.body.collideWorldBounds = true;
-
-  //
-  // player.animations.add('left', [0, 1, 2, 3], 10, true);
-  // player.animations.add('right', [5, 6, 7, 8], 10, true);
   player.animations.add('walk');
   cursors = game.input.keyboard.createCursorKeys();
+
+  coins = game.add.group();
+  coins.enableBody = true;
+  var coin = coins.create(300,300, 'coin');
+  coin.animations.add('spin');
+  coin.animations.play('spin', 10, true);
+
+  coin = coins.create(700,300, 'coin');
+  coin.animations.add('spin');
+  coin.animations.play('spin', 10, true);
+
+  coin = coins.create(500,100, 'coin');
+  coin.animations.add('spin');
+  coin.animations.play('spin', 10, true);
 }
 //checks when player and platform collide.
 function update() {
   var hitPlatform = game.physics.arcade.collide(player, platforms);
+  game.physics.arcade.overlap(player, coins, collectStar)
 
   //  Reset the players velocity (movement)
    player.body.velocity.x = 0;
@@ -82,4 +94,8 @@ function update() {
 
 function render(){
 
+}
+
+function collectStar(player, star){
+  star.kill();
 }
