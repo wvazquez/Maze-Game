@@ -1,26 +1,50 @@
-var canvas = document.getElementById("canvas");
-var context = canvas.getContext("2d");
+//global variables
+var game;
+var platforms;
+var player;
 
-imgDog = new Image();
-imgDog.src = "images/dog.svg"
-imgDog.addEventListener("load", init, false);
+//Sets up our game
+game = new Phaser.Game(800, 600, Phaser.CANVAS, '', { preload: preload, create: create, update: update });
 
-var requestAnimFrame =
-  window.requestAnimFrame ||
-  window.webkitRequestAnimationFrame ||
-  window.mozRequestAnimationFrame ||
-  window.oRequestAnimationFrame ||
-  window.msRequestAnimationFrame ||
-  function(callback){
-    window.setTimeout(callback, 1000/60);
-  };
-var dogX = 65;
-var dogY = 65;
+//Loads required assets
+function preload() {
+  game.stage.backgroundColor = '#5db1ad';
+  game.load.image('platform-steel', 'images/platform_1.png');
+  game.load.image('platform-ground', 'images/platform_2.png')
+  game.load.spritesheet('player', 'images/runner.png', 48, 62);
+  game.load.spritesheet('coin', 'images/coin.png', 36, 44);
+  game.load.spritesheet('badge', 'images/badge.png', 42, 54);
 
-function init(){
-    requestAnimFrame(update);
+
 }
-function update(){
+//creates our player, ground and ledges for the game
+function create() {
+  game.physics.startSystem(Phaser.Physics.ARCADE);
 
-  context.drawImage(imgDog, dogX, dogY, 100, 77);
+  platforms = game.add.group();
+  platforms.enableBody = true;
+
+  var ground = platforms.create(-40, game.world.height -60, 'platform-ground');
+  ground.scale.setTo(3,2);
+  ground.body.immovable = true;
+
+  var ledge = platforms.create(600,400, 'platform-steel');
+  ledge.body.immovable = true;
+  ledge = platforms.create(400,250, 'platform-steel');
+  ledge.body.immovable = true;
+
+  player = game.add.sprite(32, game.world.height-150, 'player');
+  game.physics.arcade.enable(player);
+  player.body.bounce.y = 0.2;
+  player.body.gravity.y = 300;
+  player.body.collideWorldBounds = true;
+
+}
+//checks when player and platform collide.
+function update() {
+  var hitPlatform = game.physics.arcade.collide(player, platforms);
+}
+
+function render(){
+
 }

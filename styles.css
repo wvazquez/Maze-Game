@@ -1,8 +1,6 @@
 body{
-  background: #999;
+  background: black;
 }
 canvas{
-  display: block;
-  background: #FFF;
   margin: 0 auto;
 }
