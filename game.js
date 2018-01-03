@@ -21,24 +21,17 @@ function preload() {
   game.load.spritesheet('player', 'images/runner.png', 48, 62);
   game.load.spritesheet('coin', 'images/coin.png', 36, 44);
   game.load.spritesheet('badge', 'images/badge.png', 42, 54);
-
-
 }
 //creates our player, ground and ledges for the game
 function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
 
-  platforms = game.add.group();
-  platforms.enableBody = true;
+  //physicsGroup by default has enableBody = true
+  platforms = game.add.physicsGroup();
+  createPlatform(-40, game.world.height - 60, 'platform-ground', 3, 2);
+  createPlatform(600,400, 'platform-steel');
+  createPlatform(400,250, 'platform-steel');
 
-  var ground = platforms.create(-40, game.world.height -60, 'platform-ground');
-  ground.scale.setTo(3,2);
-  ground.body.immovable = true;
-
-  var ledge = platforms.create(600,400, 'platform-steel');
-  ledge.body.immovable = true;
-  ledge = platforms.create(400,250, 'platform-steel');
-  ledge.body.immovable = true;
 
   player = game.add.sprite(32, game.world.height-150, 'player');
   game.physics.arcade.enable(player);
@@ -48,19 +41,11 @@ function create() {
   player.animations.add('walk');
   cursors = game.input.keyboard.createCursorKeys();
 
-  coins = game.add.group();
-  coins.enableBody = true;
-  var coin = coins.create(300,300, 'coin');
-  coin.animations.add('spin');
-  coin.animations.play('spin', 10, true);
+  coins = game.add.physicsGroup();
+  createCoin(300,300, 'coin');
+  createCoin(700,300, 'coin');
+  createCoin(500,100, 'coin');
 
-  coin = coins.create(700,300, 'coin');
-  coin.animations.add('spin');
-  coin.animations.play('spin', 10, true);
-
-  coin = coins.create(500,100, 'coin');
-  coin.animations.add('spin');
-  coin.animations.play('spin', 10, true);
 
   scoreText = game.add.text(16,16, 'score: ' + score, {font: 'bold 24px Arial', fill: 'white'});
   winText = game.add.text(325, 275, "", { font: "bold 48px Arial", fill: "white" });
@@ -93,7 +78,7 @@ function update() {
        player.animations.stop();
    }
 
-   //  Allows the player to jump if they are touching the ground.
+   //  Jump if they are touching the ground.
    if (cursors.up.isDown && player.body.touching.down && hitPlatform){
        player.body.velocity.y = -300;
    }
@@ -115,4 +100,15 @@ function collectStar(player, star){
   if(score === winScore){
     win = true;
   }
+}
+
+function createPlatform(left, top, item, scaleX = 1, scaleY = 1){
+  var ledge = platforms.create(left, top, item);
+  ledge.scale.setTo(scaleX,scaleY);
+  ledge.body.immovable = true;
+}
+function createCoin(left, top, item){
+  var coin = coins.create(left,top, item);
+  coin.animations.add('spin');
+  coin.animations.play('spin', 10, true);
 }
