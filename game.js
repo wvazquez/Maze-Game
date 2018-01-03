@@ -4,6 +4,7 @@ var player;
 var coins;
 var poisons;
 var platforms;
+var traps;
 var cursors;
 var score = 0;
 var winScore = 100;
@@ -44,7 +45,15 @@ function platforms(){
   createPlatform(600,400, 'platform-steel');
   createPlatform(400,250, 'platform-steel');
 }
-
+function traps(){
+  traps = game.add.physicsGroup();
+  createTrap(510, game.world.height - 50, 'water', 3, 1);
+}
+function createTrap(left, top, item,scaleX = 1, scaleY = 1){
+  var trap = traps.create(left, top, item);
+  trap.scale.setTo(scaleX,scaleY);
+  trap.body.immovable = true;
+}
 function createPlatform(left, top, item, scaleX = 1, scaleY = 1){
   var ledge = platforms.create(left, top, item);
   ledge.scale.setTo(scaleX,scaleY);
@@ -79,9 +88,12 @@ function collectPoison(player, poison){
   livesText.text = 'lives: ' + lives;
 
   if(lives === 0){
-    player.kill();
-    gameOver = true;
+    endGame();
   }
+}
+function endGame(){
+  player.kill();
+  gameOver = true;
 }
 
 window.onload = function(){
@@ -92,9 +104,11 @@ window.onload = function(){
   function preload() {
     game.stage.backgroundColor = '#5db1ad';
     game.load.image('platform-steel', 'images/platform_1.png');
-    game.load.image('platform-ground', 'images/platform_2.png')
-    game.load.spritesheet('player', 'images/runner.png', 48, 62);
+    game.load.image('platform-ground', 'images/platform_2.png');
+    game.load.image('water', 'images/water.png');
+
     // game.load.spritesheet('player', 'images/alien.png', 32, 48);
+    game.load.spritesheet('player', 'images/runner.png', 48, 62);
     game.load.spritesheet('coin', 'images/coin.png', 36, 44);
     game.load.spritesheet('poison', 'images/poison.png', 32, 32);
   }
@@ -114,6 +128,7 @@ window.onload = function(){
 
     coins();
     poisons();
+    traps();
     platforms();
 
     cursors = game.input.keyboard.createCursorKeys();
@@ -128,6 +143,7 @@ window.onload = function(){
     var hitPlatform = game.physics.arcade.collide(player, platforms);
     game.physics.arcade.overlap(player, coins, collectStar);
     game.physics.arcade.overlap(player, poisons, collectPoison);
+    game.physics.arcade.overlap(player, traps, endGame);
 
     //  Reset the players velocity (movement)
      player.body.velocity.x = 0;
