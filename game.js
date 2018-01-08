@@ -17,26 +17,31 @@ var win = false;
 
 function coins(){
   coins = game.add.physicsGroup();
-  createCoin(300,300, 'coin');
-  createCoin(700,300, 'coin');
-  createCoin(500,100, 'coin');
-  createCoin(300,100, 'coin');
-  createCoin(400,100, 'coin');
-  createCoin(500,100, 'coin');
-  createCoin(440,450, 'coin');
-  createCoin(320,400, 'coin');
-  createCoin(320,200, 'coin');
-  createCoin(320,300, 'coin');
+  createCoin(100,480, 'coin');
+  createCoin(215,380, 'coin');
+  createCoin(320,480, 'coin');
+  createCoin(420,480, 'coin');
+  createCoin(470,420, 'coin');
+  createCoin(510,360, 'coin');
+  createCoin(560,320, 'coin');
+
+  createCoin(250,160, 'coin');
+  createCoin(400,160, 'coin');
+  createCoin(550,160, 'coin');
+
+
+
+
 }
 function poisons(){
   poisons = game.add.physicsGroup();
   createPoison(180, 480, 'poison');
-  createPoison(280, 480, 'poison');
+  createPoison(220, 440, 'poison');
+  createPoison(260, 480, 'poison');
+  createPoison(500, 480, 'poison');
   createPoison(500, 300, 'poison');
-  createPoison(200, 440, 'poison');
-  createPoison(400, 280, 'poison');
-  createPoison(300, 160, 'poison');
-  createPoison(300, 500, 'poison');
+  createPoison(680, 360, 'poison');
+  createPoison(480, 160, 'poison');
 }
 
 function platforms(){
