@@ -24,14 +24,9 @@ function coins(){
   createCoin(470,420, 'coin');
   createCoin(510,360, 'coin');
   createCoin(560,320, 'coin');
-
   createCoin(250,160, 'coin');
   createCoin(400,160, 'coin');
   createCoin(550,160, 'coin');
-
-
-
-
 }
 function poisons(){
   poisons = game.add.physicsGroup();
@@ -113,7 +108,8 @@ window.onload = function(){
     game.load.image('water', 'images/water.png');
 
     // game.load.spritesheet('player', 'images/alien.png', 32, 48);
-    game.load.spritesheet('player', 'images/runner.png', 48, 62);
+    // game.load.spritesheet('player', 'images/runner.png', 48, 62);
+    game.load.spritesheet('player', 'images/frog.png', 32, 32);
     game.load.spritesheet('coin', 'images/coin.png', 36, 44);
     game.load.spritesheet('poison', 'images/poison.png', 32, 32);
   }
